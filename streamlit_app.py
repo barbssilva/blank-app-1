@@ -126,7 +126,7 @@ if st.button("🚀 Processar dados"):
         with open(last_file, "rb") as f:
             st.download_button("Descarregar Excel Processado", f, file_name=os.path.basename(last_file))
 
-    else:
+    if summary_files is None and standard_files is None:
         st.write("🚨 Primeiro carregue os ficheiros!!!")
         
 
