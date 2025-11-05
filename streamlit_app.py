@@ -100,7 +100,7 @@ if st.button("🚀 Processar dados"):
             st.download_button("Descarregar Excel Processado", f, file_name=os.path.basename(last_file))
 
     else:
-        st.write("🧠Primeira carregue os ficheiros!!!")
+        st.write("🚨 Primeiro carregue os ficheiros!!!")
         
 
 
