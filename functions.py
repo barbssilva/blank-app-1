@@ -163,26 +163,44 @@ def join_excels(arquivos,tipo_pl, output_file):
     return output_file
 
 #função que junta as duas PLS - standard e summary
-def join_pls(standard_pl, summary_pl,last_file):
-    app = xw.App(visible=False)  # invisível
-    wb_final = xw.Book()
+def join_pls(summary_pl, standard_pl, last_file):
+    wb1 = openpyxl.load_workbook(standard_pl)
+    wb2 = openpyxl.load_workbook(summary_pl)
 
-    for ficheiro in [standard_pl, summary_pl]:
-        wb = xw.Book(ficheiro)
-        for sheet in wb.sheets:
-            sheet.api.Copy(Before=wb_final.sheets[0].api)
-        wb.close()
 
-    try:
-        wb_final.sheets["Folha1"].delete()
-    except:
-        pass
+    for sheet_name in wb2.sheetnames:
+        sheet2 = wb2[sheet_name]
+        if sheet_name in wb1.sheetnames:
+            new_name = f"{sheet_name}_copy"
+        else:
+            new_name = sheet_name
+        new_sheet = wb1.create_sheet(title=new_name)
 
-    # guardar
-    wb_final.save(last_file)
-    wb_final.close()
-    app.quit()
-    
+        # Copiar largura das colunas
+        for col_letter, dim in sheet2.column_dimensions.items():
+            new_sheet.column_dimensions[col_letter].width = dim.width
+
+        # Copiar altura das linhas
+        for row_idx, dim in sheet2.row_dimensions.items():
+            new_sheet.row_dimensions[row_idx].height = dim.height
+
+        # Copiar valores e estilos das células
+        for row in sheet2.iter_rows():
+            for cell in row:
+                new_cell = new_sheet[cell.coordinate]
+                new_cell.value = cell.value
+                if cell.has_style:
+                    new_cell.font = copy.copy(cell.font)
+                    new_cell.border = copy.copy(cell.border)
+                    new_cell.fill = copy.copy(cell.fill)
+                    new_cell.number_format = copy.copy(cell.number_format)
+                    new_cell.protection = copy.copy(cell.protection)
+                    new_cell.alignment = copy.copy(cell.alignment)
+
+
+    # Salvar o arquivo final
+    wb1.save(last_file)
+
     return
 
 #remover ficheiros temporários
@@ -191,5 +209,6 @@ def remove_pls(standard_pl,summary_pl):
     os.remove(summary_pl)
 
     return
+
 
 
