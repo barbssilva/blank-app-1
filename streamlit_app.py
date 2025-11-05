@@ -10,6 +10,10 @@ import openpyxl
 import copy
 from openpyxl.utils import get_column_letter
 import xlwings as xw
+import pyautogui
+ 
+if st.button("Reset"):
+    pyautogui.hotkey("ctrl","F5")
 
 st.title("Packing Lists - BRAVE KID")
 
