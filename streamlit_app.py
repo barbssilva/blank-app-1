@@ -101,24 +101,11 @@ if summary_files and standard_files:
 
 
 
-# ⚙️ Após o download, limpar a app
-# O truque: usar session_state e st.experimental_rerun
-if "limpar" not in st.session_state:
-    st.session_state.limpar = False
-
-# Este botão simula o momento do download final
-if st.session_state.limpar:
-    st.session_state.clear()
-    st.experimental_rerun()
-
-# Função que marca a limpeza logo após o clique no download
-def limpar_apos_download():
-    st.session_state.limpar = True
+# ⚙️ 
 
 # Adiciona um botão separado (opcional) para testar o refresh
 if st.button("🔁 Refresh"):
-    limpar_apos_download()
-    st.experimental_rerun()
+    st.rerun()
         
 
     
