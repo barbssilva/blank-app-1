@@ -82,8 +82,7 @@ if st.button("🚀 Processar dados"):
     
     last_file = os.path.join(os.getcwd(),'Standard and Summary PACKING LIST_'+ faturas_string +'.xlsx')
 
-    if summary_files is None:
-        if standard_files:
+    if summary_files is None and standard_files is not None:
             placeholder = st.empty()
             placeholder.info("⏳ Por favor aguarde...")
             
@@ -95,8 +94,7 @@ if st.button("🚀 Processar dados"):
             with open(last_file, "rb") as f:
                 st.download_button("Descarregar Excel Processado", f, file_name=os.path.basename(output_file_standard))
                 
-    if standard_files is None:
-        if summary_files:
+    if standard_files is None and summary_files is not None:
             placeholder = st.empty()
             placeholder.info("⏳ Por favor aguarde...")
             
