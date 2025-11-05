@@ -15,23 +15,13 @@ st.title("Packing Lists - BRAVE KID")
 
 st.write("📁 Indique o nr da fatura/s:")
 
-if "faturas" not in st.session_state:
-    st.session_state.faturas = [""]
+# Campo único para o utilizador escrever as faturas
+faturas_input = st.text_input(
+    "Indique a/s fatura/s"
+)
 
-# Mostrar inputs dinâmicos
-nova_lista = []
-for i, valor in enumerate(st.session_state.faturas):
-    novo_valor = st.text_input(f"Fatura {i+1}", valor, key=f"fatura_{i}").strip()
-    nova_lista.append(novo_valor)
-
-# Adiciona nova caixa se a última tiver valor
-if nova_lista[-1] != "":
-    nova_lista.append("")
-
-st.session_state.faturas = nova_lista
-
-# Cria a string final (ignorando vazios)
-faturas_string = "_".join([f for f in st.session_state.faturas if f])
+# Garante que é sempre uma string, mesmo se vazio
+faturas_string = faturas_input.strip() if faturas_input else ""
 
 st.write(
     "Carregue todos os ficheiros excel necessários (PL standard e summary):"
