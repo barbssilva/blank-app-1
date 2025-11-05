@@ -52,8 +52,8 @@ if standard_files is not None:
             # guarda o caminho
             standard_temp_paths.append(Path(temp_excel.name))
     #obter o diretorio do ficheiro temporário:
-    temp_dir_standard = temp_dir_standard = standard_temp_paths[0].parent
-    output_file_standard = os.path.join(temp_dir,'STANDARD_PL.xlsx')
+    temp_dir_standard = standard_temp_paths[0].parent
+    output_file_standard = os.path.join(temp_dir_standard,'STANDARD_PL.xlsx')
     
         
 if summary_files is not None:
@@ -67,7 +67,7 @@ if summary_files is not None:
             summary_temp_paths.append(Path(temp_excel.name))
     #obter o diretorio do ficheiro temporário:
     temp_dir_summary = summary_temp_paths[0].parent
-    output_file_summary = os.path.join(temp_dir,'SUMMARY_PL.xlsx')
+    output_file_summary = os.path.join(temp_dir_summary,'SUMMARY_PL.xlsx')
     last_file = os.path.join(temp_dir,'Standard and Summary PACKING LIST.xlsx')
 
 placeholder = st.empty()
