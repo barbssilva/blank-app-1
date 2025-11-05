@@ -10,7 +10,7 @@ st.write(
     "Comece por carregar todos os ficheiros excel necessários (PL standard e summary):"
 )
 
-from functions import get_excel_files, join_excels, join_pls, remove_pls
+from functions import join_excels, join_pls, remove_pls
 
 standard_files = st.file_uploader(
     "Carregue as PLs standard",
@@ -68,6 +68,19 @@ placeholder = st.empty()
 placeholder.info("⏳ Por favor aguarde...")
 
 
-arquivos_standard=get_excel_files(standard_temp_paths)
-standard_pl=join_excels(folder_path_standard,arquivos_standard,'standard')
+standard_pl=join_excels(standard_temp_paths,'standard', output_file_standard)
+summary_pl=join_excels(summary_temp_paths,'summary', output_file_summary)
+
+join_pls(summary_pl,standard_pl,last_file)
+
+remove_pls(standard_pl,summary_pl)
+
+placeholder.empty()
+st.success("Processo terminado!")
+        
+# Abrir o ficheiro Excel processado para download
+with open(excel_saida, "rb") as f:
+    st.download_button("Descarregar Excel Processado", f, file_name=os.path.basename(last_file))
+        
+
     
