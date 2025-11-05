@@ -4,15 +4,11 @@ import copy
 from openpyxl.utils import get_column_letter
 import xlwings as xw
 
-#FUNÇÃO PARA OBTER OS NOMES DOS EXCELS
-def get_excel_files(folder_path):
-    arquivos = os.listdir(folder_path)
-    return arquivos
 
 #função para juntar os excels
-def join_excels(folder_path, arquivos,tipo_pl, output_file):
+def join_excels(arquivos,tipo_pl, output_file):
     # Abrir primeiro arquivo para template e header
-    template_wb = openpyxl.load_workbook(f'{folder_path}/{arquivos[0]}')
+    template_wb = openpyxl.load_workbook(f'{arquivos[0]}')
     template_ws = template_wb.active
 
     # Criar novo workbook e copiar formatação do template
@@ -37,7 +33,7 @@ def join_excels(folder_path, arquivos,tipo_pl, output_file):
 
     # Processar todos os arquivos
     for file in arquivos:
-        wb = openpyxl.load_workbook(f'{folder_path}/{file}')
+        wb = openpyxl.load_workbook(f'{file}')
         ws = wb.active
         
         # Começar da linha 13 de cada arquivo
@@ -194,4 +190,5 @@ def join_pls(standard_pl, summary_pl,last_file):
 def remove_pls(standard_pl,summary_pl):
     os.remove(standard_pl)
     os.remove(summary_pl)
+
     return
