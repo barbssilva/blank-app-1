@@ -13,11 +13,11 @@ import xlwings as xw
 
 st.title("Packing Lists - BRAVE KID")
 
-st.write("📁 Indique o nr fatura/s:")
+#st.write("📁 Indique o nr fatura/s:")
 
 # Campo único para o utilizador escrever as faturas
 faturas_input = st.text_input(
-    ""
+    "📁 Indique o nr fatura/s:"
 )
 
 # Garante que é sempre uma string, mesmo se vazio
