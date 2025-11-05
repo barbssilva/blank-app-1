@@ -91,7 +91,7 @@ if st.button("🚀 Processar dados"):
             st.success("Processo terminado!")
                         
             # Abrir o ficheiro Excel processado para download
-            with open(last_file, "rb") as f:
+            with open(output_file_standard, "rb") as f:
                 st.download_button("Descarregar Excel Processado", f, file_name=os.path.basename(output_file_standard))
                 
     if not standard_files and summary_files:
@@ -104,7 +104,7 @@ if st.button("🚀 Processar dados"):
             st.success("Processo terminado!")
                         
             # Abrir o ficheiro Excel processado para download
-            with open(last_file, "rb") as f:
+            with open(output_file_summary, "rb") as f:
                 st.download_button("Descarregar Excel Processado", f, file_name=os.path.basename(output_file_summary))
     
     if summary_files and standard_files:
