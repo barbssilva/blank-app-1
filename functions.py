@@ -1,3 +1,9 @@
+import os
+import openpyxl
+import copy
+from openpyxl.utils import get_column_letter
+import xlwings as xw
+
 #função para juntar os excels
 def join_excels(arquivos,tipo_pl, output_file):
     # Abrir primeiro arquivo para template e header
@@ -185,4 +191,5 @@ def remove_pls(standard_pl,summary_pl):
     os.remove(summary_pl)
 
     return
+
 
