@@ -13,11 +13,11 @@ import xlwings as xw
 
 st.title("Packing Lists - BRAVE KID")
 
-st.write("📁 Indique o nr da fatura/s:")
+st.write("📁 Indique o nr fatura/s:")
 
 # Campo único para o utilizador escrever as faturas
 faturas_input = st.text_input(
-    "Indique a/s fatura/s"
+    ""
 )
 
 # Garante que é sempre uma string, mesmo se vazio
@@ -98,6 +98,27 @@ if summary_files and standard_files:
     # Abrir o ficheiro Excel processado para download
     with open(last_file, "rb") as f:
         st.download_button("Descarregar Excel Processado", f, file_name=os.path.basename(last_file))
+
+
+
+# ⚙️ Após o download, limpar a app
+# O truque: usar session_state e st.experimental_rerun
+if "limpar" not in st.session_state:
+    st.session_state.limpar = False
+
+# Este botão simula o momento do download final
+if st.session_state.limpar:
+    st.session_state.clear()
+    st.experimental_rerun()
+
+# Função que marca a limpeza logo após o clique no download
+def limpar_apos_download():
+    st.session_state.limpar = True
+
+# Adiciona um botão separado (opcional) para testar o refresh
+if st.button("🔁 Refresh"):
+    limpar_apos_download()
+    st.experimental_rerun()
         
 
     
