@@ -80,6 +80,33 @@ if st.button("🚀 Processar dados"):
         temp_dir_summary = summary_temp_paths[0].parent
         output_file_summary = os.path.join(temp_dir_summary,'SUMMARY_PL.xlsx')
         last_file = os.path.join(temp_dir_summary,'Standard and Summary PACKING LIST_'+ faturas_string +'.xlsx')
+
+    if summary_files is None:
+        if standard_files:
+            placeholder = st.empty()
+            placeholder.info("⏳ Por favor aguarde...")
+            
+            standard_pl=join_excels(standard_temp_paths,'standard', output_file_standard)
+            placeholder.empty()
+            st.success("Processo terminado!")
+                        
+            # Abrir o ficheiro Excel processado para download
+            with open(last_file, "rb") as f:
+                st.download_button("Descarregar Excel Processado", f, file_name=os.path.basename(output_file_standard))
+                
+    if standard_files is None:
+        if summary_files:
+            placeholder = st.empty()
+            placeholder.info("⏳ Por favor aguarde...")
+            
+            summary_pl=join_excels(summary_temp_paths,'summary', output_file_summary)
+            
+            placeholder.empty()
+            st.success("Processo terminado!")
+                        
+            # Abrir o ficheiro Excel processado para download
+            with open(last_file, "rb") as f:
+                st.download_button("Descarregar Excel Processado", f, file_name=os.path.basename(output_file_summary))
     
     if summary_files and standard_files:
         placeholder = st.empty()
