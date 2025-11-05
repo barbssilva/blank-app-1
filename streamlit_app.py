@@ -53,9 +53,6 @@ with col2:
 
 
 if st.button("🚀 Processar dados"):
-    placeholder = st.empty()
-    placeholder.info("⏳ Por favor aguarde...")
-    
     if standard_files:
         standard_temp_paths = []  # aqui guardas o caminho de cada ficheiro temporário
         for f in standard_files:
@@ -85,6 +82,9 @@ if st.button("🚀 Processar dados"):
         last_file = os.path.join(temp_dir_summary,'Standard and Summary PACKING LIST_'+ faturas_string +'.xlsx')
     
     if summary_files and standard_files:
+        placeholder = st.empty()
+        placeholder.info("⏳ Por favor aguarde...")
+        
         standard_pl=join_excels(standard_temp_paths,'standard', output_file_standard)
         summary_pl=join_excels(summary_temp_paths,'summary', output_file_summary)
             
