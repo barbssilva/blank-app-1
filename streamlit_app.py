@@ -85,7 +85,7 @@ if summary_files and standard_files:
     st.success("Processo terminado!")
                 
     # Abrir o ficheiro Excel processado para download
-    with open(excel_saida, "rb") as f:
+    with open(last_file, "rb") as f:
         st.download_button("Descarregar Excel Processado", f, file_name=os.path.basename(last_file))
         
 
