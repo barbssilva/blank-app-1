@@ -14,6 +14,13 @@ import xlwings as xw
 
 st.title("Packing Lists - BRAVE KID")
 
+a=st.button(‘Show dashboard’, False)
+if st.button(‘Reset’,False):
+    st.empty()
+else:
+    if a:
+        st.subheader(‘Dashboard’)
+
 
 # Campo único para o utilizador escrever as faturas
 faturas_input = st.text_input(
