@@ -68,7 +68,7 @@ if summary_files is not None:
     #obter o diretorio do ficheiro temporário:
     temp_dir_summary = summary_temp_paths[0].parent
     output_file_summary = os.path.join(temp_dir_summary,'SUMMARY_PL.xlsx')
-    last_file = os.path.join(temp_dir,'Standard and Summary PACKING LIST.xlsx')
+    last_file = os.path.join(temp_dir_summary,'Standard and Summary PACKING LIST.xlsx')
 
 placeholder = st.empty()
 placeholder.info("⏳ Por favor aguarde...")
