@@ -103,9 +103,13 @@ if summary_files and standard_files:
 
 # ⚙️ 
 
-# Adiciona um botão separado (opcional) para testar o refresh
-if st.button("🔁 Refresh"):
-    st.rerun()
+def limpar_campos():
+    st.session_state.faturas_input = ""
+    st.session_state.standard_files = None
+    st.session_state.summary_files = None
+    st.session_state.file_uploader = None
+
+st.button("🧹 Limpar faturas e ficheiros", on_click=limpar_campos)
         
 
     
