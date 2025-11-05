@@ -79,7 +79,8 @@ if st.button("🚀 Processar dados"):
         #obter o diretorio do ficheiro temporário:
         temp_dir_summary = summary_temp_paths[0].parent
         output_file_summary = os.path.join(temp_dir_summary,'SUMMARY_PL.xlsx')
-        last_file = os.path.join(temp_dir_summary,'Standard and Summary PACKING LIST_'+ faturas_string +'.xlsx')
+    
+    last_file = os.path.join(os.getcwd(),'Standard and Summary PACKING LIST_'+ faturas_string +'.xlsx')
 
     if summary_files is None:
         if standard_files:
