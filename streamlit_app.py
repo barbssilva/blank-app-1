@@ -73,7 +73,6 @@ if summary_files:
 placeholder = st.empty()
 placeholder.info("⏳ Por favor aguarde...")
 
-
 standard_pl=join_excels(standard_temp_paths,'standard', output_file_standard)
 summary_pl=join_excels(summary_temp_paths,'summary', output_file_summary)
 
