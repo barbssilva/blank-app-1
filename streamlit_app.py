@@ -13,6 +13,15 @@ import xlwings as xw
 
 st.title("Packing Lists - BRAVE KID")
 
+
+# Campo único para o utilizador escrever as faturas
+faturas_input = st.text_input(
+    "🧾Indique a(s) fatura(s):"
+)
+
+# Garante que é sempre uma string, mesmo se vazio
+faturas_string = faturas_input.strip() if faturas_input else ""
+
 st.write(
     "Carregue todos os ficheiros excel necessários (PL standard e summary):"
 )
