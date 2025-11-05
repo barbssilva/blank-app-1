@@ -11,7 +11,7 @@ import copy
 from openpyxl.utils import get_column_letter
 import xlwings as xw
 
-st.title("Packing lists")
+st.title("Packing Lists - BRAVE KID")
 st.write(
     "Comece por carregar todos os ficheiros excel necessários (PL standard e summary):"
 )
