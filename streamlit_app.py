@@ -13,16 +13,6 @@ import xlwings as xw
 
 st.title("Packing Lists - BRAVE KID")
 
-#st.write("📁 Indique o nr fatura/s:")
-
-# Campo único para o utilizador escrever as faturas
-faturas_input = st.text_input(
-    "📁 Indique o nr fatura/s:"
-)
-
-# Garante que é sempre uma string, mesmo se vazio
-faturas_string = faturas_input.strip() if faturas_input else ""
-
 st.write(
     "Carregue todos os ficheiros excel necessários (PL standard e summary):"
 )
@@ -100,16 +90,6 @@ if summary_files and standard_files:
         st.download_button("Descarregar Excel Processado", f, file_name=os.path.basename(last_file))
 
 
-
-# ⚙️ 
-
-def limpar_campos():
-    st.session_state.faturas_input = ""
-    st.session_state.standard_files = None
-    st.session_state.summary_files = None
-    st.session_state.file_uploader = None
-
-st.button("🧹 Limpar faturas e ficheiros", on_click=limpar_campos)
         
 
     
