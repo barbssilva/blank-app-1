@@ -10,7 +10,8 @@ st.write(
     "Comece por carregar todos os ficheiros excel necessários (PL standard e summary):"
 )
 
-#from .... import (colocar as funções que estão no ficheiro com o código)
+from functions import get_excel_files, join_excels, join_pls, remove_pls
+
 standard_files = st.file_uploader(
     "Carregue as PLs standard",
     type=["xlsx", "xls"],
@@ -65,4 +66,8 @@ if summary_files is not None:
 
 placeholder = st.empty()
 placeholder.info("⏳ Por favor aguarde...")
+
+
+arquivos_standard=get_excel_files(standard_temp_paths)
+standard_pl=join_excels(folder_path_standard,arquivos_standard,'standard')
     
