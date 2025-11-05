@@ -64,7 +64,7 @@ if st.button("🚀 Processar dados"):
                 standard_temp_paths.append(Path(temp_excel.name))
         #obter o diretorio do ficheiro temporário:
         temp_dir_standard = standard_temp_paths[0].parent
-        output_file_standard = os.path.join(temp_dir_standard,'STANDARD_PL.xlsx')
+        output_file_standard = os.path.join(temp_dir_standard,'STANDARD_PL'+ faturas_string +'.xlsx')
     
         
     if summary_files:
@@ -78,7 +78,7 @@ if st.button("🚀 Processar dados"):
                 summary_temp_paths.append(Path(temp_excel.name))
         #obter o diretorio do ficheiro temporário:
         temp_dir_summary = summary_temp_paths[0].parent
-        output_file_summary = os.path.join(temp_dir_summary,'SUMMARY_PL.xlsx')
+        output_file_summary = os.path.join(temp_dir_summary,'SUMMARY_PL'+ faturas_string +'.xlsx')
     
     last_file = os.path.join(os.getcwd(),'Standard and Summary PACKING LIST_'+ faturas_string +'.xlsx')
 
