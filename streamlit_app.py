@@ -19,6 +19,7 @@ faturas_input = st.text_input(
     "🧾(Opcional) Indique a(s) fatura(s) - (isto é apenas usado para o nome do ficheiro excel que irá descarregar no fim):"
 )
 
+
 # Garante que é sempre uma string, mesmo se vazio
 faturas_string = faturas_input.strip() if faturas_input else ""
 
@@ -127,6 +128,20 @@ if st.button("🚀 Processar dados"):
 
     if not standard_files and not summary_files:
         st.write("🚨 Primeiro carregue os ficheiros!!!")
+
+# Define a callback function to reset the state
+#def reset_state():
+#    st.session_state['text_input_value'] = 'Default text'
+#    st.session_state['checkbox_value'] = False
+#    st.session_state['slider_value'] = 50
+
+# Widgets
+#st.text_input("My Text Input", value=st.session_state['text_input_value'], key='text_input_value')
+#st.checkbox("My Checkbox", value=st.session_state['checkbox_value'], key='checkbox_value')
+#st.slider("My Slider", 0, 100, st.session_state['slider_value'], key='slider_value')
+
+# Reset button
+#st.button("Reset All", on_click=reset_state)
         
 
 
