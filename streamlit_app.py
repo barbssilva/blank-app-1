@@ -12,8 +12,29 @@ from openpyxl.utils import get_column_letter
 import xlwings as xw
 
 st.title("Packing Lists - BRAVE KID")
+
+st.write("📁 Indique o nr da fatura/s:)
+
+if "faturas" not in st.session_state:
+    st.session_state.faturas = [""]
+
+# Mostrar inputs dinâmicos
+nova_lista = []
+for i, valor in enumerate(st.session_state.faturas):
+    novo_valor = st.text_input(f"Fatura {i+1}", valor, key=f"fatura_{i}").strip()
+    nova_lista.append(novo_valor)
+
+# Adiciona nova caixa se a última tiver valor
+if nova_lista[-1] != "":
+    nova_lista.append("")
+
+st.session_state.faturas = nova_lista
+
+# Cria a string final (ignorando vazios)
+faturas_string = "_".join([f for f in st.session_state.faturas if f])
+
 st.write(
-    "Comece por carregar todos os ficheiros excel necessários (PL standard e summary):"
+    "Carregue todos os ficheiros excel necessários (PL standard e summary):"
 )
 
 from functions import join_excels, join_pls, remove_pls
@@ -68,7 +89,7 @@ if summary_files:
     #obter o diretorio do ficheiro temporário:
     temp_dir_summary = summary_temp_paths[0].parent
     output_file_summary = os.path.join(temp_dir_summary,'SUMMARY_PL.xlsx')
-    last_file = os.path.join(temp_dir_summary,'Standard and Summary PACKING LIST.xlsx')
+    last_file = os.path.join(temp_dir_summary,'Standard and Summary PACKING LIST'+ faturas_string +'.xlsx')
 
 if summary_files and standard_files:
     placeholder = st.empty()
