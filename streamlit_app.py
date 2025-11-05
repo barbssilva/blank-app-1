@@ -1,6 +1,13 @@
 import streamlit as st
+import pandas as pd
+import io
+import tempfile
+from pathlib import Path
+import glob
 
-st.title("🎈 My new app")
+st.set_page_config(page_title="Packing Lists", layout="wide")
+
+st.title("Packing lists")
 st.write(
-    "Let's start building! For help and inspiration, head over to [docs.streamlit.io](https://docs.streamlit.io/)."
+    "Comece por carregar todos os ficheiros excel necessários"
 )
