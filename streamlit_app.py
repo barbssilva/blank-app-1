@@ -13,7 +13,7 @@ import xlwings as xw
 
 st.title("Packing Lists - BRAVE KID")
 
-st.write("📁 Indique o nr da fatura/s:')
+st.write("📁 Indique o nr da fatura/s:")
 
 if "faturas" not in st.session_state:
     st.session_state.faturas = [""]
