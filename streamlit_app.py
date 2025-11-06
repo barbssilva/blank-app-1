@@ -30,13 +30,6 @@ st.write(
 )
 
 
-# Criar variáveis no session_state, se ainda não existirem
-if "standard_files" not in st.session_state:
-    st.session_state.standard_files = []
-if "summary_files" not in st.session_state:
-    st.session_state.summary_files = []
-    
-
 standard_files = st.file_uploader(
     "Carregue as PLs standard",
     type=["xlsx", "xls"],
@@ -51,12 +44,6 @@ summary_files = st.file_uploader(
     key="uploader_summary"
 )
 
-# Guardar os uploads no estado
-if standard_files:
-    st.session_state.standard_files = standard_files
-if summary_files:
-    st.session_state.summary_files = summary_files
-    
 
 # para visualizar os ficheiros que foram carregados
 col1, col2 = st.columns(2)
@@ -144,16 +131,6 @@ if st.button("🚀 Processar dados"):
     if not standard_files and not summary_files:
         st.write("🚨 Primeiro carregue os ficheiros!!!")
 
-
-# --- Botão universal para limpar tudo ---
-def limpar_uploads():
-    # limpar listas e widgets
-    st.session_state.standard_files = []
-    st.session_state.summary_files = []
-    st.session_state.uploader_standard = None
-    st.session_state.uploader_summary = None
-
-st.button("🧹 Limpar todos os uploads", on_click=limpar_uploads)
 
 
         
