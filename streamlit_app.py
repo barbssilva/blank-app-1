@@ -18,7 +18,7 @@ st.title("Packing Lists - BRAVE KID")
 faturas_input = st.text_input(
     "🧾(Opcional) Indique a(s) fatura(s) - (isto é apenas usado para o nome do ficheiro excel que irá descarregar no fim):",
     value=st.session_state['text_input_value'], 
-    key='text_input_value')
+    key='text_input_value'
 )
 
 
