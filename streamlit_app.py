@@ -10,6 +10,7 @@ import openpyxl
 import copy
 from openpyxl.utils import get_column_letter
 import xlwings as xw
+import SessionState  
 
 
 st.title("Packing Lists - BRAVE KID")
@@ -130,15 +131,14 @@ if st.button("🚀 Processar dados"):
         st.write("🚨 Primeiro carregue os ficheiros!!!")
 
 # Define a callback function to reset the state
+session = SessionState.get(run_id=0)
 
-def reset_state():
-    standard_files = []
-    summary_files = []
-    
+slider_element = st.empty()
 
+if st.button("Reset"):
+  session.run_id += 1
 
-# Reset button
-st.button("Reset All", on_click=reset_state)
+slider_element.slider("Slide me!", 0, 100, key=session.run_id)
         
 
 
