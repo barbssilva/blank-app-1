@@ -16,9 +16,7 @@ st.title("Packing Lists - BRAVE KID")
 
 # Campo único para o utilizador escrever as faturas
 faturas_input = st.text_input(
-    "🧾(Opcional) Indique a(s) fatura(s) - (isto é apenas usado para o nome do ficheiro excel que irá descarregar no fim):",
-    value=st.session_state['text_input_value'], 
-    key='text_input_value'
+    "🧾(Opcional) Indique a(s) fatura(s) - (isto é apenas usado para o nome do ficheiro excel que irá descarregar no fim):"
 )
 
 
@@ -134,7 +132,6 @@ if st.button("🚀 Processar dados"):
 # Define a callback function to reset the state
 
 def reset_state():
-    st.session_state['text_input_value'] = 'Default text'
     standard_files = []
     summary_files = []
     
