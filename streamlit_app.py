@@ -18,8 +18,7 @@ st.title("Packing Lists - BRAVE KID")
 
 # Campo único para o utilizador escrever as faturas
 faturas_input = st.text_input(
-    "🧾(Opcional) Indique a(s) fatura(s) ou data de envio - (isto é apenas usado para o nome do ficheiro excel que irá descarregar no fim. 
-    ATENÇÃO - se escrever uma data não use / ):"
+    "🧾(Opcional) Indique a(s) fatura(s) ou data de envio - (isto é apenas usado para o nome do ficheiro excel que irá descarregar no fim. ATENÇÃO - se escrever uma data não use / ):"
 )
 
 
