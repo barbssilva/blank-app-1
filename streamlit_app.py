@@ -9,8 +9,9 @@ import os
 import openpyxl
 import copy
 from openpyxl.utils import get_column_letter
-import xlwings as xw
-import SessionState  
+
+
+from functions import join_excels, join_pls, remove_pls
 
 
 st.title("Packing Lists - BRAVE KID")
@@ -28,7 +29,13 @@ st.write(
     "Carregue todos os ficheiros excel necessários (PL standard e summary):"
 )
 
-from functions import join_excels, join_pls, remove_pls
+
+# Criar variáveis no session_state, se ainda não existirem
+if "standard_files" not in st.session_state:
+    st.session_state.standard_files = []
+if "summary_files" not in st.session_state:
+    st.session_state.summary_files = []
+    
 
 standard_files = st.file_uploader(
     "Carregue as PLs standard",
@@ -43,6 +50,13 @@ summary_files = st.file_uploader(
     accept_multiple_files=True,
     key="uploader_summary"
 )
+
+# Guardar os uploads no estado
+if standard_files:
+    st.session_state.standard_files = standard_files
+if summary_files:
+    st.session_state.summary_files = summary_files
+    
 
 # para visualizar os ficheiros que foram carregados
 col1, col2 = st.columns(2)
@@ -130,16 +144,16 @@ if st.button("🚀 Processar dados"):
     if not standard_files and not summary_files:
         st.write("🚨 Primeiro carregue os ficheiros!!!")
 
-# Define a callback function to reset the state
-session = SessionState.get(run_id=0)
 
-slider_element = st.empty()
+# --- Botão universal para limpar tudo ---
+def limpar_uploads():
+    # limpar listas e widgets
+    st.session_state.standard_files = []
+    st.session_state.summary_files = []
+    st.session_state.uploader_standard = None
+    st.session_state.uploader_summary = None
 
-if st.button("Reset"):
-  session.run_id += 1
-
-slider_element.slider("Slide me!", 0, 100, key=session.run_id)
-        
+st.button("🧹 Limpar todos os uploads", on_click=limpar_uploads)
 
 
         
