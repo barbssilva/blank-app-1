@@ -101,7 +101,7 @@ if summary_pl_final is not None:
             # guarda o conteúdo do ficheiro carregado
             temp_excel.write(f.read())
             # guarda o caminho
-            summary_final = Path(temp_excel.name))
+            summary_final = Path(temp_excel.name)
 
     st.write("Faça o uploud dos stantard PLs")
     standard_files = st.file_uploader(
