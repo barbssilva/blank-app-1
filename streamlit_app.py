@@ -95,13 +95,11 @@ summary_pl_final = st.file_uploader(
 
 if summary_pl_final is not None:
     st.success("Ficheiro carregado 👍")
-    for f in summary_pl_final:
-        # cria um ficheiro temporário com a mesma extensão
-        with tempfile.NamedTemporaryFile(delete=False, suffix=".xlsx") as temp_excel:
-            # guarda o conteúdo do ficheiro carregado
-            temp_excel.write(f.read())
-            # guarda o caminho
-            summary_final = Path(temp_excel.name)
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".xlsx") as temp_excel:
+        # guarda o conteúdo do ficheiro carregado
+        temp_excel.write(summary_pl_final.read())
+        # guarda o caminho
+        summary_final = Path(temp_excel.name)
 
     st.write("Faça o uploud dos stantard PLs")
     standard_files = st.file_uploader(
