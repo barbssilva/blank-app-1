@@ -13,7 +13,7 @@ from openpyxl.utils import get_column_letter
 
 from functions import join_excels, join_pls, remove_pls
 from functions_summary import ordenar_summary, join_excels, pre_proc_summary
-from functions_standard import pre_pro_standard, join_excels_standard, ordenar_standard
+from functions_standard import pre_proc_standard, join_excels_standard, ordenar_standard
 
 
 st.title("Packing Lists - BRAVE KID")
@@ -129,7 +129,7 @@ if summary_pl_final is not None:
             placeholder = st.empty()
             placeholder.info("⏳ Por favor aguarde...")
 
-            pre_pro_standard(standard_temp_paths)
+            pre_proc_standard(standard_temp_paths)
             standard_pl = join_excels_standard(standard_temp_paths, output_file_standard)
 
             ordenar_standard(summary_final ,standard_pl) 
