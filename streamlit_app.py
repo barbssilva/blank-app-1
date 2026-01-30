@@ -12,7 +12,7 @@ from openpyxl.utils import get_column_letter
 
 
 from functions import join_excels, join_pls, remove_pls
-from function_summary import ordenar_summary, join_excels, pre_proc_summary
+from functions_summary import ordenar_summary, join_excels, pre_proc_summary
 
 
 st.title("Packing Lists - BRAVE KID")
