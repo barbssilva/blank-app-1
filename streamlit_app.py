@@ -61,8 +61,8 @@ summary_files = st.file_uploader(
 #    st.write([f.name for f in (summary_files or [])])
 
 # para visualizar os ficheiros que foram carregados
-st.caption("Summary")
-st.write([f.name for f in (summary_files or [])])
+#st.caption("Summary")
+#st.write([f.name for f in (summary_files or [])])
 
 if st.button ("🚀 Processar Summary PLs"):
     if summary_files:
