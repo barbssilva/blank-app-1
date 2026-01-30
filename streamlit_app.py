@@ -26,9 +26,8 @@ faturas_input = st.text_input(
 # Garante que é sempre uma string, mesmo se vazio
 faturas_string = faturas_input.strip() if faturas_input else ""
 
-st.write(
-    "A Standard PL usa a ordem dos dados da Summary PL, pelo que para obter os dois PLs na ordem correta comece pelas Summary PLs"
-)
+st.header("1º Passo: Summary PL")
+#st.write("A Standard PL usa a ordem dos dados da Summary PL, pelo que para obter os dois PLs na ordem correta comece pelas Summary PLs")
 
 summary_files = st.file_uploader(
     "Carregue as PLs summary",
@@ -36,8 +35,6 @@ summary_files = st.file_uploader(
     accept_multiple_files=True,
     key="uploader_summary"
 )
-
-
 
 # para visualizar os ficheiros que foram carregados
 #col1, col2 = st.columns(2)
@@ -48,9 +45,6 @@ summary_files = st.file_uploader(
 #    st.caption("Summary")
 #    st.write([f.name for f in (summary_files or [])])
 
-# para visualizar os ficheiros que foram carregados
-#st.caption("Summary")
-#st.write([f.name for f in (summary_files or [])])
 
 if st.button ("🚀 Processar Summary PLs"):
     if summary_files:
@@ -84,8 +78,12 @@ if st.button ("🚀 Processar Summary PLs"):
 
 st.write(
     "Depois de fazer o download do Summary PL, verifique se toda a informação está correta.")
+
+
+st.header("2º Passo: Standard PL")
+
 st.write(
-    "Após se ter certificado que a Summary PL está bem, volte a fazer uploud dessa PL no botão abaixo")
+    "Após ter verificado o Summary PL, volte a fazer uploud dessa PL no botão abaixo")
 
 summary_pl_final = st.file_uploader(
     "Carregue a Summary PL",
