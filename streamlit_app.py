@@ -12,6 +12,7 @@ from openpyxl.utils import get_column_letter
 
 
 from functions import join_excels, join_pls, remove_pls
+from function_summary import ordenar_summary, join_excels, pre_proc_summary
 
 
 st.title("Packing Lists - BRAVE KID")
@@ -37,36 +38,63 @@ summary_files = st.file_uploader(
 )
 
 
-standard_files = st.file_uploader(
-    "Carregue as PLs standard",
-    type=["xlsx", "xls"],
-    accept_multiple_files=True,
-    key="uploader_standard"
-)
 
+#if ficheiro_1 is not None:
+#    st.success("Ficheiro carregado 👍")
 
-if ficheiro_1 is not None:
-    st.success("Ficheiro carregado 👍")
+#    ficheiro_2 = st.file_uploader(
+#        "Carregar ficheiro secundário",
+ #       type=["xlsx"],
+ #       key="file2"
+ #   )
 
-    ficheiro_2 = st.file_uploader(
-        "Carregar ficheiro secundário",
-        type=["xlsx"],
-        key="file2"
-    )
-
-    if ficheiro_2 is not None:
-        st.button("Processar ficheiros")
+#    if ficheiro_2 is not None:
+#        st.button("Processar ficheiros")
 
 # para visualizar os ficheiros que foram carregados
-col1, col2 = st.columns(2)
+#col1, col2 = st.columns(2)
+#with col1:
+#    st.caption("Standard")
+#    st.write([f.name for f in (standard_files or [])])
+#with col2:
+#    st.caption("Summary")
+#    st.write([f.name for f in (summary_files or [])])
+
+# para visualizar os ficheiros que foram carregados
+col1 = st.columns(1)
 with col1:
-    st.caption("Standard")
-    st.write([f.name for f in (standard_files or [])])
-with col2:
     st.caption("Summary")
     st.write([f.name for f in (summary_files or [])])
 
+if st.button ("🚀 Processar Summary PLs"):
+    if summary_files:
+        summary_temp_paths = []  # aqui guardas o caminho de cada ficheiro temporário
+        for f in summary_files:
+            # cria um ficheiro temporário com a mesma extensão
+            with tempfile.NamedTemporaryFile(delete=False, suffix=".xlsx") as temp_excel:
+                # guarda o conteúdo do ficheiro carregado
+                temp_excel.write(f.read())
+                # guarda o caminho
+                summary_temp_paths.append(Path(temp_excel.name))
+        #obter o diretorio do ficheiro temporário:
+        temp_dir_summary = summary_temp_paths[0].parent
+        output_file_summary = os.path.join(temp_dir_summary,'SUMMARY_PL_'+ faturas_string +'.xlsx')
 
+        placeholder = st.empty()
+        placeholder.info("⏳ Por favor aguarde...")
+
+        pre_proc_summary(summary_temp_paths)
+        summary_pl = join_excels(summary_temp_paths, output_file_summary)
+        ordenar_summary(summary_pl)
+            
+        placeholder.empty()
+        st.success("Processo terminado!")
+                        
+        # Abrir o ficheiro Excel processado para download
+        with open(output_file_summary, "rb") as f:
+            st.download_button("Descarregar Excel Processado", f, file_name=os.path.basename(summary_pl))
+    
+    
 if st.button("🚀 Processar dados"):
     if standard_files:
         standard_temp_paths = []  # aqui guardas o caminho de cada ficheiro temporário
@@ -144,7 +172,12 @@ if st.button("🚀 Processar dados"):
         st.write("🚨 Primeiro carregue os ficheiros!!!")
 
 
-
+standard_files = st.file_uploader(
+    "Carregue as PLs standard",
+    type=["xlsx", "xls"],
+    accept_multiple_files=True,
+    key="uploader_standard"
+)
         
 
     
