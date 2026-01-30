@@ -90,7 +90,7 @@ if st.button ("🚀 Processar Summary PLs"):
                         
         # Abrir o ficheiro Excel processado para download
         with open(output_file_summary, "rb") as f:
-            st.download_button("Descarregar Excel Processado", f, file_name=os.path.basename(summary_pl))
+            st.download_button("Descarregar Summary PL", f, file_name=os.path.basename(summary_pl))
     
     
 if st.button("🚀 Processar dados"):
