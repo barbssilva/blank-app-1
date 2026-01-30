@@ -158,3 +158,73 @@ def join_excels(arquivos, output_file):
         
     return output_file
 
+
+def ordenar_summary(final_file):
+    wb = openpyxl.load_workbook(final_file)
+    ws = wb.active
+
+    wo_col=3  #coluna W.O NUMBER
+    start_row = 13
+    data_rows = []
+    for row in range(start_row, ws.max_row):
+        row_values = [ws.cell(row=row, column=col).value for col in range(1, ws.max_column + 1)]
+        if set(row_values) == {None}:
+            break
+        data_rows.append(row_values)
+
+
+    data_rows.sort(key=lambda r: (r[wo_col - 1] or ""))
+
+    for i, row_values in enumerate(data_rows, start=start_row):
+        for col, value in enumerate(row_values, start=1):
+            ws.cell(row=i, column=col).value = value
+
+    n_rows = len(data_rows)
+    unique_rows = {}
+
+
+    #ideia tentar encontrar onde é o ultimo ch_bm na primeira coluna e essa será a ultima linha a considerar
+    # Percorrer linhas a partir da linha 13
+    for row in ws.iter_rows(min_row=13, max_row=13+n_rows-1, values_only=True):
+        key = row[0:7]  # colunas 1 a 7
+
+        if key in unique_rows:
+            # somar colunas 8 e 10 a 16
+            for col_idx in [7] + list(range(9, 16)):
+                val = row[col_idx] or 0
+                unique_rows[key][col_idx] += val
+        else:
+            # criar cópia mutável da linha
+            new_row = list(row)
+            for col_idx in [7] + list(range(9, 16)):
+                new_row[col_idx] = new_row[col_idx] or 0
+            unique_rows[key] = new_row
+                
+    # Escrever as linhas únicas de volta, mas antes colocar todas as linhas limpas
+    for clear_row in range(13, 13 + n_rows):
+        for col in range(1, ws.max_column + 1):
+            ws.cell(row=clear_row, column=col).value = None
+            
+    row_cursor = 13
+    for row in unique_rows.values():
+        for col_idx, value in enumerate(row):
+            ws.cell(row=row_cursor, column=col_idx + 1, value=value)
+        row_cursor += 1
+    
+    ws.delete_rows(13 + len(unique_rows), n_rows - len(unique_rows))
+
+
+    last_row = 13+len(unique_rows)
+    for col in range(8, 25):  # 12 = L, 31 = AE
+        if col == 9:  # pular M
+            continue
+        col_letter = get_column_letter(col)
+        formula_cell = ws.cell(row=last_row, column=col)
+        if last_row > 13:
+            formula_cell.value = f"=SUM({col_letter}13:{col_letter}{last_row-1})"
+        else:
+            formula_cell.value = 0
+                
+        formula_cell.number_format = '0'
+    wb.save(final_file)
+    return
