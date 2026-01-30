@@ -39,18 +39,6 @@ summary_files = st.file_uploader(
 
 
 
-#if ficheiro_1 is not None:
-#    st.success("Ficheiro carregado 👍")
-
-#    ficheiro_2 = st.file_uploader(
-#        "Carregar ficheiro secundário",
- #       type=["xlsx"],
- #       key="file2"
- #   )
-
-#    if ficheiro_2 is not None:
-#        st.button("Processar ficheiros")
-
 # para visualizar os ficheiros que foram carregados
 #col1, col2 = st.columns(2)
 #with col1:
@@ -91,7 +79,34 @@ if st.button ("🚀 Processar Summary PLs"):
         # Abrir o ficheiro Excel processado para download
         with open(output_file_summary, "rb") as f:
             st.download_button("Descarregar Summary PL", f, file_name=os.path.basename(summary_pl))
-    
+
+st.write(
+    "Depois de fazer o download do Summary PL, verifique se toda a informação está correta.")
+st.write(
+    "Após se ter certificado que a Summary PL está bem, volte a fazer uploud dessa PL no botão abaixo")
+
+summary_pl_final = st.file_uploader(
+    "Carregue a Summary PL",
+    type=["xlsx", "xls"],
+    accept_multiple_files=False,
+    key="uploader_summary_final"
+)
+
+if summary_pl_final is not None:
+    st.success("Ficheiro carregado 👍")
+
+    standard_files = st.file_uploader(
+        "Carregue as PLs standard",
+        type=["xlsx", "xls"],
+        accept_multiple_files=True,
+        key="uploader_standard"
+    )
+            
+
+    if standard_files is not None:
+        if st.button("🚀 Processar standard PLs"):
+            st.write("teste")
+
     
 if st.button("🚀 Processar dados"):
     if standard_files:
@@ -169,13 +184,5 @@ if st.button("🚀 Processar dados"):
     if not standard_files and not summary_files:
         st.write("🚨 Primeiro carregue os ficheiros!!!")
 
-
-standard_files = st.file_uploader(
-    "Carregue as PLs standard",
-    type=["xlsx", "xls"],
-    accept_multiple_files=True,
-    key="uploader_standard"
-)
-        
 
     
