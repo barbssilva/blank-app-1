@@ -95,6 +95,7 @@ summary_pl_final = st.file_uploader(
 if summary_pl_final is not None:
     st.success("Ficheiro carregado 👍")
 
+    st.write("Faça o uploud dos stantard PLs")
     standard_files = st.file_uploader(
         "Carregue as PLs standard",
         type=["xlsx", "xls"],
