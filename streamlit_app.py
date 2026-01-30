@@ -30,7 +30,7 @@ st.header("1º Passo: Summary PL")
 #st.write("A Standard PL usa a ordem dos dados da Summary PL, pelo que para obter os dois PLs na ordem correta comece pelas Summary PLs")
 
 summary_files = st.file_uploader(
-    "Carregue as PLs summary",
+    "Carregue as summary PLs",
     type=["xlsx", "xls"],
     accept_multiple_files=True,
     key="uploader_summary"
@@ -102,15 +102,14 @@ if summary_pl_final is not None:
 
     st.write("Faça o uploud dos stantard PLs")
     standard_files = st.file_uploader(
-        "Carregue as PLs standard",
+        "Carregue as standard PLs",
         type=["xlsx", "xls"],
         accept_multiple_files=True,
         key="uploader_standard"
     )
             
-
-    if standard_files is not None:
-        if st.button("🚀 Processar standard PLs"):
+    if st.button("🚀 Processar standard PLs"):
+        if standard_files:
             standard_temp_paths = []  # aqui guardas o caminho de cada ficheiro temporário
             for f in standard_files:
                 # cria um ficheiro temporário com a mesma extensão
@@ -137,6 +136,8 @@ if summary_pl_final is not None:
             # Abrir o ficheiro Excel processado para download
             with open(output_file_standard, "rb") as f:
                 st.download_button("Descarregar Standard PL", f, file_name=os.path.basename(standard_pl))
+        else:
+            st.write("🚨 Primeiro carregue os ficheiros!!!")
 
 
 
