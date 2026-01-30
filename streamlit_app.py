@@ -26,7 +26,14 @@ faturas_input = st.text_input(
 faturas_string = faturas_input.strip() if faturas_input else ""
 
 st.write(
-    "Carregue todos os ficheiros excel necessários (PL standard e summary):"
+    "A Standard PL usa a ordem dos dados da Summary PL, pelo que para obter os dois PLs na ordem correta comece pelas Summary PLs"
+)
+
+summary_files = st.file_uploader(
+    "Carregue as PLs summary",
+    type=["xlsx", "xls"],
+    accept_multiple_files=True,
+    key="uploader_summary"
 )
 
 
@@ -37,13 +44,18 @@ standard_files = st.file_uploader(
     key="uploader_standard"
 )
 
-summary_files = st.file_uploader(
-    "Carregue as PLs summary",
-    type=["xlsx", "xls"],
-    accept_multiple_files=True,
-    key="uploader_summary"
-)
 
+if ficheiro_1 is not None:
+    st.success("Ficheiro carregado 👍")
+
+    ficheiro_2 = st.file_uploader(
+        "Carregar ficheiro secundário",
+        type=["xlsx"],
+        key="file2"
+    )
+
+    if ficheiro_2 is not None:
+        st.button("Processar ficheiros")
 
 # para visualizar os ficheiros que foram carregados
 col1, col2 = st.columns(2)
