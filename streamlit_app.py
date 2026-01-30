@@ -108,7 +108,7 @@ if summary_pl_final is not None:
         key="uploader_standard"
     )
             
-    if st.button("🚀 Processar standard PLs"):
+    if st.button("🚀 Processar Standard PLs"):
         if standard_files:
             standard_temp_paths = []  # aqui guardas o caminho de cada ficheiro temporário
             for f in standard_files:
