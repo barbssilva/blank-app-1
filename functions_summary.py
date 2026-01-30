@@ -32,7 +32,7 @@ def pre_proc_summary(arquivos):
                 parts = val.split(' ')
                 print(parts)
                 if len(parts) != 3:
-                    st.write("ERRO!! O PO {val} não está no formato esperado")
+                    st.write(f"ERRO!! O PO {val} não está no formato esperado")
                 else:
                     wo_ente = parts[0]
                     ws.cell(row=row, column=1).value = wo_ente
@@ -57,7 +57,7 @@ def pre_proc_summary(arquivos):
                 second = val2[end:].strip().replace('.','')
                 ws.cell(row=row, column=6).value  = second 
             else:
-                st.write("ERRO!! O STYLE NAME {val2} não menciona o valor ART. A coluna ARTICLE ficou vazia") 
+                st.write(f"ERRO!! O STYLE NAME {val2} não menciona o valor ART. A coluna ARTICLE ficou vazia") 
                 ws.cell(row=row, column=6).value  = ''
 
 
