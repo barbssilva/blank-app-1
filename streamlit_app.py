@@ -13,6 +13,7 @@ from openpyxl.utils import get_column_letter
 
 from functions import join_excels, join_pls, remove_pls
 from functions_summary import ordenar_summary, join_excels, pre_proc_summary
+from functions_standard import pre_pro_standard, join_excels_standard, ordenar_standard
 
 
 st.title("Packing Lists - BRAVE KID")
@@ -94,6 +95,13 @@ summary_pl_final = st.file_uploader(
 
 if summary_pl_final is not None:
     st.success("Ficheiro carregado 👍")
+    for f in summary_pl_final:
+        # cria um ficheiro temporário com a mesma extensão
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".xlsx") as temp_excel:
+            # guarda o conteúdo do ficheiro carregado
+            temp_excel.write(f.read())
+            # guarda o caminho
+            summary_final = Path(temp_excel.name))
 
     st.write("Faça o uploud dos stantard PLs")
     standard_files = st.file_uploader(
@@ -106,7 +114,32 @@ if summary_pl_final is not None:
 
     if standard_files is not None:
         if st.button("🚀 Processar standard PLs"):
-            st.write("teste")
+            standard_temp_paths = []  # aqui guardas o caminho de cada ficheiro temporário
+            for f in standard_files:
+                # cria um ficheiro temporário com a mesma extensão
+                with tempfile.NamedTemporaryFile(delete=False, suffix=".xlsx") as temp_excel:
+                    # guarda o conteúdo do ficheiro carregado
+                    temp_excel.write(f.read())
+                    # guarda o caminho
+                    standard_temp_paths.append(Path(temp_excel.name))
+            #obter o diretorio do ficheiro temporário:
+            temp_dir_standard = standard_temp_paths[0].parent
+            output_file_standard = os.path.join(temp_dir_standard,'STANDARD_PL_'+ faturas_string +'.xlsx')
+
+            placeholder = st.empty()
+            placeholder.info("⏳ Por favor aguarde...")
+
+            pre_pro_standard(standard_temp_paths)
+            standard_pl = join_excels_standard(standard_temp_paths, output_file_standard)
+
+            ordenar_standard(summary_final ,standard_pl) 
+                
+            placeholder.empty()
+            st.success("Processo terminado!")
+                            
+            # Abrir o ficheiro Excel processado para download
+            with open(output_file_standard, "rb") as f:
+                st.download_button("Descarregar Standard PL", f, file_name=os.path.basename(standard_pl))
 
     
 if st.button("🚀 Processar dados"):
@@ -122,6 +155,7 @@ if st.button("🚀 Processar dados"):
         #obter o diretorio do ficheiro temporário:
         temp_dir_standard = standard_temp_paths[0].parent
         output_file_standard = os.path.join(temp_dir_standard,'STANDARD_PL_'+ faturas_string +'.xlsx')
+        
     
         
     if summary_files:
