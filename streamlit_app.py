@@ -11,7 +11,6 @@ import copy
 from openpyxl.utils import get_column_letter
 
 
-from functions import join_excels, join_pls, remove_pls
 from functions_summary import ordenar_summary, join_excels, pre_proc_summary
 from functions_standard import pre_proc_standard, join_excels_standard, ordenar_standard
 
@@ -80,6 +79,8 @@ if st.button ("🚀 Processar Summary PLs"):
         # Abrir o ficheiro Excel processado para download
         with open(output_file_summary, "rb") as f:
             st.download_button("Descarregar Summary PL", f, file_name=os.path.basename(summary_pl))
+    else:
+        st.write("🚨 Primeiro carregue os ficheiros!!!")
 
 st.write(
     "Depois de fazer o download do Summary PL, verifique se toda a informação está correta.")
@@ -139,83 +140,8 @@ if summary_pl_final is not None:
             with open(output_file_standard, "rb") as f:
                 st.download_button("Descarregar Standard PL", f, file_name=os.path.basename(standard_pl))
 
-    
-if st.button("🚀 Processar dados"):
-    if standard_files:
-        standard_temp_paths = []  # aqui guardas o caminho de cada ficheiro temporário
-        for f in standard_files:
-            # cria um ficheiro temporário com a mesma extensão
-            with tempfile.NamedTemporaryFile(delete=False, suffix=".xlsx") as temp_excel:
-                # guarda o conteúdo do ficheiro carregado
-                temp_excel.write(f.read())
-                # guarda o caminho
-                standard_temp_paths.append(Path(temp_excel.name))
-        #obter o diretorio do ficheiro temporário:
-        temp_dir_standard = standard_temp_paths[0].parent
-        output_file_standard = os.path.join(temp_dir_standard,'STANDARD_PL_'+ faturas_string +'.xlsx')
-        
-    
-        
-    if summary_files:
-        summary_temp_paths = []  # aqui guardas o caminho de cada ficheiro temporário
-        for f in summary_files:
-            # cria um ficheiro temporário com a mesma extensão
-            with tempfile.NamedTemporaryFile(delete=False, suffix=".xlsx") as temp_excel:
-                # guarda o conteúdo do ficheiro carregado
-                temp_excel.write(f.read())
-                # guarda o caminho
-                summary_temp_paths.append(Path(temp_excel.name))
-        #obter o diretorio do ficheiro temporário:
-        temp_dir_summary = summary_temp_paths[0].parent
-        output_file_summary = os.path.join(temp_dir_summary,'SUMMARY_PL_'+ faturas_string +'.xlsx')
-    
-    last_file = os.path.join(os.getcwd(),'Standard and Summary PACKING LIST_'+ faturas_string +'.xlsx')
 
-    if not summary_files and standard_files:
-            placeholder = st.empty()
-            placeholder.info("⏳ Por favor aguarde...")
-            
-            standard_pl=join_excels(standard_temp_paths,'standard', output_file_standard)
-            placeholder.empty()
-            st.success("Processo terminado!")
-                        
-            # Abrir o ficheiro Excel processado para download
-            with open(output_file_standard, "rb") as f:
-                st.download_button("Descarregar Excel Processado", f, file_name=os.path.basename(output_file_standard))
-                
-    if not standard_files and summary_files:
-            placeholder = st.empty()
-            placeholder.info("⏳ Por favor aguarde...")
-            
-            summary_pl=join_excels(summary_temp_paths,'summary', output_file_summary)
-            
-            placeholder.empty()
-            st.success("Processo terminado!")
-                        
-            # Abrir o ficheiro Excel processado para download
-            with open(output_file_summary, "rb") as f:
-                st.download_button("Descarregar Excel Processado", f, file_name=os.path.basename(output_file_summary))
-    
-    if summary_files and standard_files:
-        placeholder = st.empty()
-        placeholder.info("⏳ Por favor aguarde...")
-        
-        standard_pl=join_excels(standard_temp_paths,'standard', output_file_standard)
-        summary_pl=join_excels(summary_temp_paths,'summary', output_file_summary)
-            
-        join_pls(summary_pl,standard_pl,last_file)
-                
-        remove_pls(standard_pl,summary_pl)
-                
-        placeholder.empty()
-        st.success("Processo terminado!")
-                        
-        # Abrir o ficheiro Excel processado para download
-        with open(last_file, "rb") as f:
-            st.download_button("Descarregar Excel Processado", f, file_name=os.path.basename(last_file))
 
-    if not standard_files and not summary_files:
-        st.write("🚨 Primeiro carregue os ficheiros!!!")
 
 
     
