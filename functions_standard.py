@@ -17,9 +17,9 @@ def pre_proc_standard(arquivos):
         max_row = ws.max_row
         for row in range(13, max_row + 1):
             #remover o valor de grid
-            ws.cell(row=row, column=10).value = '' #grid
-            ws.cell(row=row, column=7).value = '' #net weight
-            ws.cell(row=row, column=8).value = '' #gross weight
+            #ws.cell(row=row, column=10).value = '' #grid
+            #ws.cell(row=row, column=7).value = '' #net weight
+            #ws.cell(row=row, column=8).value = '' #gross weight
                 
             #selecionar a coluna style name e separar em 2 valores, style name e article
             cell2 = ws.cell(row=row, column=3) #coluna STYLE NAME
