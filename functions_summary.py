@@ -25,21 +25,41 @@ def pre_proc_summary(arquivos):
             val = cell.value
             if not isinstance(val, str):
                 continue
-            
-            val = str(val).strip().replace('  ','')
-            m = re.search(r'CH_BM', str(val).strip(), flags=re.IGNORECASE)
+                
+            val = str(val).strip()    
+            # Verifica se contém CH e BM em qualquer posição, maiúsculas/minúsculas
+            m = re.search(r'CH[^0-9]*BM', val, flags=re.IGNORECASE)
+
             if m:
-                parts = val.split(' ')
-                print(parts)
-                if len(parts) != 3:
-                    st.write(f"ERRO!! O PO {val} não está no formato esperado")
-                else:
-                    wo_ente = parts[0]
-                    ws.cell(row=row, column=1).value = wo_ente
-                    wo_year = parts[1]
+                ws.cell(row=row, column=1).value = "CH_BM"
+                # Remove tudo o que não for número
+                numeros = re.sub(r'[^0-9]', '', val)
+                if len(numeros) >= 7:
+                    wo_year = numeros[:4] #primeiros 4 numeros para o ano
+                    wo_number = numeros[4:] #restantes numeros
+
                     ws.cell(row=row, column=2).value = wo_year
-                    wo_number = parts[2]
                     ws.cell(row=row, column=3).value = wo_number
+            else:
+                st.write("ANTES DE FAZER O PL STANDARD POR FAVOR CORRIJA QUALQUER ERRO NO PL SUMMARY!!!")
+                st.write(f"ERRO!!{val} não está no formato esperado")
+                    
+                
+            
+            #val = str(val).strip().replace('  ','')
+            #m = re.search(r'CH_BM', str(val).strip(), flags=re.IGNORECASE)
+            #if m:
+            #    parts = val.split(' ')
+            #    if len(parts) != 3:
+            #        st.write("ANTES DE FAZER O PL STANDARD POR FAVOR CORRIJA QUALQUER ERRO NO PL SUMMARY!!!")
+            #        st.write(f"ERRO!! O PO {val} não está no formato esperado")
+            #    else:
+             #       wo_ente = parts[0]
+              #      ws.cell(row=row, column=1).value = wo_ente
+              #      wo_year = parts[1]
+              #      ws.cell(row=row, column=2).value = wo_year
+              #      wo_number = parts[2]
+              #      ws.cell(row=row, column=3).value = wo_number
                 
             #selecionar a coluna style name e separar em 2 valores, style name e article number
             cell2 = ws.cell(row=row, column=5) #coluna STYLE NAME
