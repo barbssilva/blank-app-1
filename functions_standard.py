@@ -256,9 +256,30 @@ def ordenar_standard(path_summary, path_standard):
     for row_n, row in enumerate(linhas_ordenadas):
         for col_idx, cell in enumerate(row):
             #primeiro colocar o valor de cada celula como string vazia, para não correr o risco de manter valores antigos dessa celula
-            ws.cell(row=row_cursor, column=col_idx+1, value="")
-            ws.cell(row=row_cursor, column=col_idx+1, value=cell)
+            celula=ws.cell(row=row_cursor, column=col_idx+1, value="")
+            celula=ws.cell(row=row_cursor, column=col_idx+1, value=cell)
+            celula.alignment = Alignment(horizontal='center', vertical='center')
         row_cursor += 1
+        
+    # colocar fórmula na coluna L (coluna 12): soma de L13 até à linha anterior ao "NUMBER OF BOXES:"
+    last_row = ws.max_row
+    for col in range(7, 27):  # G ate Z
+        if col == 10 or col == 11:  # pular j e k
+            continue
+        col_letter = get_column_letter(col)
+        formula_cell = ws.cell(row=last_row, column=col)
+        if last_row > 13:
+            formula_cell.value = f"=SUM({col_letter}13:{col_letter}{last_row-1})"
+        else:
+            formula_cell.value = 0
+        if col == 7 or col == 8:
+            formula_cell.number_format = '0.00'    
+            # centrar horizontal e verticalmente
+            formula_cell.alignment = Alignment(
+            horizontal='center',
+            vertical='center')
+        else:
+            formula_cell.number_format = '0'
 
     wb.save(path_standard)
     
