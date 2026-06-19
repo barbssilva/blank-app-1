@@ -16,10 +16,88 @@ def pre_proc_summary(arquivos):
         ws = wb.active
 
         max_row = ws.max_row
-        for row in range(13, max_row + 1):
-            #remover o valor de grid
-            ws.cell(row=row, column=9).value = '' #grid
+       # Mapeamento dos tamanhos para a coluna correta
+        mapa_colunas = {
+                '3m': 10,  # J
+                '2y':10,  # J
+                '3-6':10,  # J
+                '6m':11,  # K
+                '4':11,  # K
+                '4y':11,  # K
+                '6-9':11,  # K
+                '9m':12,  # L
+                '9-12':12,  # L
+                '12m':13, # M
+                '6':13, # M
+                '6y':13, # M
+                '12-18':13, # M
+                '18m':14, # N
+                '18-24':14, # N
+                '24m':15, # O
+                '24-36':15, # O
+                '8':15, # O
+                '8y':15, # O
+                '36m':16, # P
+                '10':17, # Q
+                '10y':17, # Q
+                '12':19, # S
+                '12y':19, # S                
+                '14':21, # U
+                '14y':21, # U
+                '16':23, # W
+                '16y':23, # W
+            }
+        
+        dados_movidos = []
 
+        # Guardar dados das colunas J até X num dataframe antes de limpar
+        for col in range(10, 25):  # J até X
+            cabecalho = ws.cell(row=12, column=col).value
+
+            if cabecalho is None or str(cabecalho).strip() == '':
+                continue
+
+            cabecalho_norm = str(cabecalho).strip().lower().replace(' ', '')
+
+            if cabecalho_norm not in mapa_colunas:
+                continue
+
+            coluna_destino = mapa_colunas[cabecalho_norm]
+
+            for row in range(13, max_row):
+                valor = ws.cell(row=row, column=col).value
+
+                # parar quando encontrar a primeira célula vazia nessa coluna
+                if valor is None or str(valor).strip() == '':
+                    continue
+
+                dados_movidos.append({
+                    'row': row,
+                    'source_col': col,
+                    'source_header': cabecalho,
+                    'target_col': coluna_destino,
+                    'value': valor,
+                })
+
+        df_movimentos = pd.DataFrame(dados_movidos)
+
+        # Limpar colunas J até X, da linha 13 para baixo
+        for row in range(13, max_row):
+            for col in range(10, 25):  # J até X
+                ws.cell(row=row, column=col).value = ''
+
+        # Recolocar os dados nos locais certos
+        for _, item in df_movimentos.iterrows():
+            ws.cell(
+                row=int(item['row']),
+                column=int(item['target_col'])
+            ).value = item['value']
+        
+
+        # Limpar linha 12, colunas J até X
+        for col in range(10, 25):
+            ws.cell(row=12, column=col).value = ''
+        for row in range(13, max_row + 1):
             #selecionar a coluna w.o number e separar em 3 valores, w.o ente, w.o year, wo.number
             cell = ws.cell(row=row, column=3) #coluna w.o number
             val = cell.value
@@ -44,23 +122,6 @@ def pre_proc_summary(arquivos):
                 st.write("ANTES DE FAZER O PL STANDARD POR FAVOR CORRIJA QUALQUER ERRO NO PL SUMMARY!!!")
                 st.write(f"ERRO!!{val} não está no formato esperado")
                     
-                
-            
-            #val = str(val).strip().replace('  ','')
-            #m = re.search(r'CH_BM', str(val).strip(), flags=re.IGNORECASE)
-            #if m:
-            #    parts = val.split(' ')
-            #    if len(parts) != 3:
-            #        st.write("ANTES DE FAZER O PL STANDARD POR FAVOR CORRIJA QUALQUER ERRO NO PL SUMMARY!!!")
-            #        st.write(f"ERRO!! O PO {val} não está no formato esperado")
-            #    else:
-             #       wo_ente = parts[0]
-              #      ws.cell(row=row, column=1).value = wo_ente
-              #      wo_year = parts[1]
-              #      ws.cell(row=row, column=2).value = wo_year
-              #      wo_number = parts[2]
-              #      ws.cell(row=row, column=3).value = wo_number
-                
             #selecionar a coluna style name e separar em 2 valores, style name e article number
             cell2 = ws.cell(row=row, column=5) #coluna STYLE NAME
             val2 = cell2.value
@@ -79,8 +140,6 @@ def pre_proc_summary(arquivos):
             else:
                 st.write(f"ERRO!! O STYLE NAME {val2} não menciona o valor ART. A coluna ARTICLE ficou vazia") 
                 ws.cell(row=row, column=6).value  = ''
-
-
 
         wb.save(file)
     return
@@ -137,7 +196,6 @@ def join_excels(arquivos, output_file):
 
     # Remover linhas totalmente vazias (apenas a partir da linha 13)
     removed = 0
-    #print(new_ws.max_row)
     for row_idx in range(new_ws.max_row, 12, -1):  # iterar de baixo para cima
         is_blank = True
         for cell in new_ws[row_idx]:
@@ -159,9 +217,6 @@ def join_excels(arquivos, output_file):
             continue
         if str(a).strip().upper() == "TOTAL":
             rows_with_label.append(r)
-            #c_val = new_ws.cell(row=r, column=3).value
-            #n = int(c_val) if c_val not in (None, "") else 0
-            #total += n
 
     if rows_with_label:
         last_row = max(rows_with_label)
@@ -232,10 +287,7 @@ def ordenar_summary(final_file):
             ws.cell(row=row_cursor, column=col_idx + 1, value=value)
         row_cursor += 1
     
-    ws.delete_rows(13 + len(unique_rows), n_rows - len(unique_rows))
-
-
-    last_row = 13+len(unique_rows)
+    last_row = ws.max_row
     for col in range(8, 25):  # 12 = L, 31 = AE
         if col == 9:  # pular M
             continue
