@@ -15,12 +15,88 @@ def pre_proc_standard(arquivos):
         ws = wb.active
 
         max_row = ws.max_row
+        # Mapeamento dos tamanhos para a coluna correta
+        mapa_colunas = {
+                '3m': 12,  # L
+                '2y':12,  # L
+                '3-6':12,  # L
+                '6m':13,  # M
+                '4':13,  # M
+                '4y':13,  # M
+                '6-9':13,  # M
+                '9m':14,  # N
+                '9-12':14,  # N
+                '12m':15, # O
+                '6':15, # O
+                '6y':15, # O
+                '12-18':15, # O
+                '18m':16, # P
+                '18-24':16, # P
+                '24m':17, # Q
+                '24-36':17, # Q
+                '8':17, # Q
+                '8y':17, # Q
+                '36m':18, # R
+                '10':19, # S
+                '10y':19, # S
+                '12':21, # U
+                '12y':21, # U                
+                '14':23, # W
+                '14y':23, # W
+                '16':25, # Y
+                '16y':25, # Y
+            }
+        
+        dados_movidos = []
+
+        # Guardar dados das colunas K até Z num dataframe antes de limpar
+        for col in range(11, 26):  # K até Z
+            cabecalho = ws.cell(row=12, column=col).value
+
+            if cabecalho is None or str(cabecalho).strip() == '':
+                continue
+
+            cabecalho_norm = str(cabecalho).strip().lower().replace(' ', '')
+
+            if cabecalho_norm not in mapa_colunas:
+                continue
+
+            coluna_destino = mapa_colunas[cabecalho_norm]
+
+            for row in range(13, max_row):
+                valor = ws.cell(row=row, column=col).value
+
+                # parar quando encontrar a primeira célula vazia nessa coluna
+                if valor is None or str(valor).strip() == '':
+                    continue
+
+                dados_movidos.append({
+                    'row': row,
+                    'source_col': col,
+                    'source_header': cabecalho,
+                    'target_col': coluna_destino,
+                    'value': valor,
+                })
+
+        df_movimentos = pd.DataFrame(dados_movidos)
+
+        # Limpar colunas K até Z, da linha 13 para baixo
+        for row in range(13, max_row):
+            for col in range(11, 26):  # K até Z
+                ws.cell(row=row, column=col).value = ''
+
+        # Recolocar os dados nos locais certos
+        for _, item in df_movimentos.iterrows():
+            ws.cell(
+                row=int(item['row']),
+                column=int(item['target_col'])
+            ).value = item['value']
+        
+
+        # Limpar linha 12, colunas K até Z
+        for col in range(11, 26):
+            ws.cell(row=12, column=col).value = ''
         for row in range(13, max_row + 1):
-            #remover o valor de grid
-            #ws.cell(row=row, column=10).value = '' #grid
-            #ws.cell(row=row, column=7).value = '' #net weight
-            #ws.cell(row=row, column=8).value = '' #gross weight
-                
             #selecionar a coluna style name e separar em 2 valores, style name e article
             cell2 = ws.cell(row=row, column=3) #coluna STYLE NAME
             val2 = cell2.value
@@ -183,21 +259,7 @@ def ordenar_standard(path_summary, path_standard):
             ws.cell(row=row_cursor, column=col_idx+1, value="")
             ws.cell(row=row_cursor, column=col_idx+1, value=cell)
         row_cursor += 1
-    
-    # colocar fórmula na coluna L (coluna 12): soma de L13 até à linha anterior ao "NUMBER OF BOXES:"
-    last_row = ws.max_row
-    for col in range(9, 27):  # 12 = L, 31 = AE
-        if col == 10:  # pular M
-            continue
-        col_letter = get_column_letter(col)
-        formula_cell = ws.cell(row=last_row, column=col)
-        if last_row > 13:
-            formula_cell.value = f"=SUM({col_letter}13:{col_letter}{last_row-1})"
-        else:
-            formula_cell.value = 0
-                    
-        formula_cell.number_format = '0'
-    
+
     wb.save(path_standard)
     
     return
