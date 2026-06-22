@@ -7,7 +7,7 @@ import pandas as pd
 import streamlit as st
 
 
-### SUMMARY PACKING LIST ###
+### SUMMARY PACKING LIST ### 
 #pre processamento dos excels summary packing list
 
 def pre_proc_summary(arquivos):
