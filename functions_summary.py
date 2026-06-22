@@ -266,13 +266,13 @@ def ordenar_summary(final_file):
 
         if key in unique_rows:
             # somar colunas 8 e 10 a 16
-            for col_idx in [7] + list(range(9, 16)):
+            for col_idx in [7] + list(range(9, 24)):
                 val = row[col_idx] or 0
                 unique_rows[key][col_idx] += val
         else:
             # criar cópia mutável da linha
             new_row = list(row)
-            for col_idx in [7] + list(range(9, 16)):
+            for col_idx in [7] + list(range(9, 24)):
                 new_row[col_idx] = new_row[col_idx] or 0
             unique_rows[key] = new_row
                 
